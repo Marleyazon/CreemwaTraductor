@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Traducteur</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { margin-bottom: 5px; font-size: 32px; }
+        .version { font-size: 14px; color: #555; margin-bottom: 20px; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #resultat { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>Français - Creemwa</h1>
+<div class="version">Mise à jour 1.0</div>
+
+<textarea id="texteEntree" placeholder="Tapez votre texte en français ici..."></textarea><br>
+<button onclick="traduire()">Traduire</button>
+
+<div id="resultat"></div>
+
+<script>
+function traduire() {
+    var texte = document.getElementById("texteEntree").value;  
+    
+    // ==========================================
+    // PRIORITÉ ABSOLUE : L' (Apostrophes)
+    // ==========================================
+    texte = texte.replace(/\bl'abeille\b/gi, "TEMP_LABZIBZIT");
+    texte = texte.replace(/\bl'éléphant\b/gi, "TEMP_LAGROSENDRALM");
+    texte = texte.replace(/\bl'oiseau\b/gi, "TEMP_LOPIUPIU");
+    texte = texte.replace(/\bl'iguane\b/gi, "lmigùann");
+    texte = texte.replace(/\bl'(\w+)/gi, "l$1");
+    texte = texte.replace(/TEMP_LABZIBZIT/gi, "labzibzit");
+    texte = texte.replace(/TEMP_LAGROSENDRALM/gi, "lagrosendralm");
+    texte = texte.replace(/TEMP_LOPIUPIU/gi, "lopiùpiù");
+
+    var traduction = texte;
+
+    // Repérage initial précis des emplacements du mot "des" pour le collage final
+    var positionsDes = [];
+    var regexDesInit = /\bdes\s+(\w+)/gi;
+    var match;
+    while ((match = regexDesInit.exec(texte)) !== null) {
+        positionsDes.push(match[1].toLowerCase());
+    }
+
+    // ==========================================
+    // 1. BLOCS SPECIAUX ET POSSESSIFS COMPLETS
+    // ==========================================
+    traduction = traduction.replace(/\bje m'ennuis\b/gi, "mo ta taz no mé konten lé se swar");
+    traduction = traduction.replace(/\bcomme\b/gi, "com");
+    traduction = traduction.replace(/\bcommentaire\b/gi, "comm");
+    traduction = traduction.replace(/\bcommentaires\b/gi, "comhs");
+    traduction = traduction.replace(/\bcomment\b/gi, "comen");
+    traduction = traduction.replace(/\bennuis-toi\b/gi, "to taz mé konten lé se swar twa");
+
+    traduction = traduction.replace(/\bmon petit chien à moi\b/gi, "mo lolù");
+    traduction = traduction.replace(/\bmon petit chat à moi\b/gi, "mo lùlù");
+    traduction = traduction.replace(/\bma petite chienne à moi\b/gi, "ma lolùt");
+    traduction = traduction.replace(/\bma petite chatte à moi\b/gi, "ma lùlùt");
+    
+    traduction = traduction.replace(/\bpetit chien à moi\b/gi, "lolù");
+    traduction = traduction.replace(/\bpetit chat à moi\b/gi, "lùlù");
+    traduction = traduction.replace(/\bpetite chienne à moi\b/gi, "lolùt");
+    traduction = traduction.replace(/\bpetite chatte à moi\b/gi, "lùlùt");
+
+    traduction = traduction.replace(/\bmon chien à moi\b/gi, "mo yoyù");
+    traduction = traduction.replace(/\bmon chat à moi\b/gi, "mo yùyù");
+    traduction = traduction.replace(/\bma chienne à moi\b/gi, "la yoyùt");
+    traduction = traduction.replace(/\bma chatte à moi\b/gi, "la yùyùt");
+
+    traduction = traduction.replace(/\bchien à moi\b/gi, "yoyù");
+    traduction = traduction.replace(/\bchat à moi\b/gi, "yùyù");
+    traduction = traduction.replace(/\bchienne à moi\b/gi, "yoyùt");
+    traduction = traduction.replace(/\bchatte à moi\b/gi, "yùyùt");
+
+    traduction = traduction.replace(/\bpetit chien\b/gi, "dibubuch");
+    traduction = traduction.replace(/\bchiot\b/gi, "chiopti");
+    traduction = traduction.replace(/\bchaton\b/gi, "chapti");
+
+    // ==========================================
+    // 2. CAS DU VERBE ETRE
+    // ==========================================
+    traduction = traduction.replace(/\bje suis\b/gi, "mwa");
+    traduction = traduction.replace(/\btu es\b/gi, "twa"); 
+    traduction = traduction.replace(/\bil est\b/gi, "il");
+    traduction = traduction.replace(/\belle est\b/gi, "el");
+    traduction = traduction.replace(/\bon est\b/gi, "noytem");
+    traduction = traduction.replace(/\bnous sommes\b/gi, "nù");
+    traduction = traduction.replace(/\bvous êtes\b/gi, "vù");
+    traduction = traduction.replace(/\bils sont\b/gi, "ils");
+    traduction = traduction.replace(/\belles sont\b/gi, "els");
+    traduction = traduction.replace(/\bêtre\b/gi, "séer");
+
+    // ==========================================
+    // 3. CONJUGAISONS DES VERBES (PRONOM + VERBE)
+    // ==========================================
+    traduction = traduction.replace(/\b(je\s+ai|j'ai)\b/gi, "é");
+    traduction = traduction.replace(/\btu as\b/gi, "a");
+    traduction = traduction.replace(/\b(il|elle|on) a\b/gi, "a");
+    traduction = traduction.replace(/\bnous avons\b/gi, "av");
+    traduction = traduction.replace(/\bvous avez\b/gi, "av");
+    traduction = traduction.replace(/\b(ils|elles) ont\b/gi, "as");
+    traduction = traduction.replace(/\bavoir\b/gi, "avwar");
+
+    traduction = traduction.replace(/\bje bois\b/gi, "boa");
+    traduction = traduction.replace(/\btu bois\b/gi, "bwa");
+    traduction = traduction.replace(/\b(il|elle|on) boit\b/gi, "bwa");
+    traduction = traduction.replace(/\bnous buvons\b/gi, "bwav");
+    traduction = traduction.replace(/\bvous buvez\b/gi, "bwav");
+    traduction = traduction.replace(/\b(ils|elles) boivent\b/gi, "bwas");
+    traduction = traduction.replace(/\bboir\b/gi, "bwar");
+
+    traduction = traduction.replace(/\bje mange\b/gi, "mang");
+    traduction = traduction.replace(/\btu manges\b/gi, "mangé");
+    traduction = traduction.replace(/\b(il|elle|on) mange\b/gi, "mangé");
+    traduction = traduction.replace(/\bnous mangeons\b/gi, "mangév");
+    traduction = traduction.replace(/\bvous mangez\b/gi, "mangév");
+    traduction = traduction.replace(/\b(ils|elles) mangent\b/gi, "mangés");
+    traduction = traduction.replace(/\bmanger\b/gi, "manger");
+
+    traduction = traduction.replace(/\bje grignote\b/gi, "miamiamiot");
+    traduction = traduction.replace(/\btu grignotes\b/gi, "miamiamioté");
+    traduction = traduction.replace(/\b(il|elle|on) grignote\b/gi, "miamiamioté");
+    traduction = traduction.replace(/\bnous grignotons\b/gi, "miamiamiotév");
+    traduction = traduction.replace(/\bvous grignotez\b/gi, "miamiamiotév");
+    traduction = traduction.replace(/\b(ils|elles) grignotent\b/gi, "miamiamiotés");
+    traduction = traduction.replace(/\bgrignoter\b/gi, "miamiamioter");
+
+    traduction = traduction.replace(/\bje dors\b/gi, "dor");
+    traduction = traduction.replace(/\btu dors\b/gi, "dorm");
+    traduction = traduction.replace(/\b(il|elle|on) dort\b/gi, "dorm");
+    traduction = traduction.replace(/\bnous dormons\b/gi, "dormon");
+    traduction = traduction.replace(/\bvous dormez\b/gi, "dormé");
+    traduction = traduction.replace(/\b(ils|elles) dorment\b/gi, "dorms");
+    traduction = traduction.replace(/\bdormir\b/gi, "dormir");
+
+    traduction = traduction.replace(/\bje viens\b/gi, "vi");
+    traduction = traduction.replace(/\btu viens\b/gi, "vin");
+    traduction = traduction.replace(/\b(il|elle|on) vient\b/gi, "vin");
+    traduction = traduction.replace(/\bnous venons\b/gi, "vinon");
+    traduction = traduction.replace(/\bvous venez\b/gi, "viné");
+    traduction = traduction.replace(/\b(ils|elles) viennent\b/gi, "vins");
+    traduction = traduction.replace(/\bvenir\b/gi, "vinir");
+
+    traduction = traduction.replace(/\bje vais\b/gi, "vé");
+    traduction = traduction.replace(/\btu vas\b/gi, "va");
+    traduction = traduction.replace(/\b(il|elle|on) va\b/gi, "va");
+    traduction = traduction.replace(/\bnous allons\b/gi, "vév");
+    traduction = traduction.replace(/\bvous allez\b/gi, "vév");
+    traduction = traduction.replace(/\b(ils|elles) vont\b/gi, "vés");
+    traduction = traduction.replace(/\baller\b/gi, "vér");
+
+    traduction = traduction.replace(/\bje fais\b/gi, "fée");
+    traduction = traduction.replace(/\btu fais\b/gi, "fe");
+    traduction = traduction.replace(/\b(il|elle|on) fait\b/gi, "fe");
+    traduction = traduction.replace(/\bnous faisons\b/gi, "fon");
+    traduction = traduction.replace(/\bvous faites\b/gi, "fé");
+    traduction = traduction.replace(/\b(ils|elles) font\b/gi, "fes");
+    traduction = traduction.replace(/\bfaire\b/gi, "fer");
+
+    traduction = traduction.replace(/\bj'achète\b/gi, "achte");
+    traduction = traduction.replace(/\btu achètes\b/gi, "achté");
+    traduction = traduction.replace(/\b(il|elle|on) achète\b/gi, "achté");
+    traduction = traduction.replace(/\bnous achetons\b/gi, "achtév");
+    traduction = traduction.replace(/\bvous achetez\b/gi, "achtév");
+    traduction = traduction.replace(/\b(ils|elles) achètent\b/gi, "achtés");
+    traduction = traduction.replace(/\bacheter\b/gi, "achter");
+
+    traduction = traduction.replace(/\bje vends\b/gi, "buy");
+    traduction = traduction.replace(/\btu vends\b/gi, "buyé");
+    traduction = traduction.replace(/\b(il|elle|on) vend\b/gi, "buyé");
+    traduction = traduction.replace(/\bnous vendons\b/gi, "buyév");
+    traduction = traduction.replace(/\bvous vendez\b/gi, "buyév");
+    traduction = traduction.replace(/\b(ils|elles) vendent\b/gi, "buyés");
+    traduction = traduction.replace(/\bvendre\b/gi, "buyer");
+
+    traduction = traduction.replace(/\bje cherche\b/gi, "cherch");
+    traduction = traduction.replace(/\btu cherches\b/gi, "cherché");
+    traduction = traduction.replace(/\b(il|elle|on) cherche\b/gi, "cherché");
+    traduction = traduction.replace(/\bnous cherchons\b/gi, "cherchév");
+    traduction = traduction.replace(/\bvous cherchez\b/gi, "cherchév");
+    traduction = traduction.replace(/\b(ils|elles) cherchent\b/gi, "cherqués");
+    traduction = traduction.replace(/\bchercher\b/gi, "chercher");
+
+    traduction = traduction.replace(/\bje veux\b/gi, "mové");
+    traduction = traduction.replace(/\btu veux\b/gi, "tova");
+    traduction = traduction.replace(/\b(il|elle|on) veut\b/gi, "liva");
+    traduction = traduction.replace(/\bnous voulons\b/gi, "nùvav");
+    traduction = traduction.replace(/\bvous voulez\b/gi, "vùvav");
+    traduction = traduction.replace(/\b(ils|elles) veulent\b/gi, "livésas");
+    traduction = traduction.replace(/\bvouloir\b/gi, "velé");
+
+    // ==========================================
+    // 4. VERBES SEULS
+    // ==========================================
+    traduction = traduction.replace(/\bboit\b/gi, "bwa");
+    traduction = traduction.replace(/\bbois\b/gi, "boa");
+    traduction = traduction.replace(/\bboivent\b/gi, "bwas");
+    
+    traduction = traduction.replace(/\bmangeont\b/gi, "mangés");
+    traduction = traduction.replace(/\bmangent\b/gi, "mangés");
+    traduction = traduction.replace(/\bmange\b/gi, "mangé");
+    
+    traduction = traduction.replace(/\bgrignotent\b/gi, "miamiamiotés");
+    traduction = traduction.replace(/\bgrignote\b/gi, "miamiamioté");
+    
+    traduction = traduction.replace(/\bdort\b/gi, "dorm");
+    traduction = traduction.replace(/\bdors\b/gi, "dorm");
+    traduction = traduction.replace(/\bdorment\b/gi, "dorms");
+    
+    traduction = traduction.replace(/\bvient\b/gi, "vin");
+    traduction = traduction.replace(/\bviens\b/gi, "vin");
+    traduction = traduction.replace(/\bviennent\b/gi, "vins");
+
+    // ==========================================
+    // 5. NOURRITURE / ANIMAUX (L' déjà traités au début)
+    // ==========================================
+    traduction = traduction.replace(/\bde l'eau\b/gi, "o");
+    traduction = traduction.replace(/\bpain\b/gi, "pun");
+    traduction = traduction.replace(/\bgateau\b/gi, "gato");
+    traduction = traduction.replace(/\bviande\b/gi, "carn");
+    traduction = traduction.replace(/\bfrites\b/gi, "frits");
+    traduction = traduction.replace(/\bpatate\b/gi, "pomde tarr");
+    traduction = traduction.replace(/\btomate\b/gi, "rùzh");
+    traduction = traduction.replace(/\bpomme\b/gi, "pom");
+    traduction = traduction.replace(/\bpoire\b/gi, "pwar");
+    traduction = traduction.replace(/\bcourgette\b/gi, "nenepapion");
+    traduction = traduction.replace(/\bfruit\b/gi, "frwi");
+    traduction = traduction.replace(/\blégume\b/gi, "legum");
+    traduction = traduction.replace(/\bfruits\b/gi, "frwis");
+    traduction = traduction.replace(/\blégumes\b/gi, "legums");
+    traduction = traduction.replace(/\beau\b/gi, "o");
+    traduction = traduction.replace(/\blait\b/gi, "lée");
+    traduction = traduction.replace(/\bcoca\b/gi, "coc cola");
+    traduction = traduction.replace(/\bpepsi\b/gi, "coca coc");
+    traduction = traduction.replace(/\borangina\b/gi, "orengin");
+    traduction = traduction.replace(/\bpétillante\b/gi, "petiayent");
+    traduction = traduction.replace(/\bpates\b/gi, "fritrùs");
+    traduction = traduction.replace(/\bgourde\b/gi, "gùrd");
+    traduction = traduction.replace(/\bje bois de l'eau dans ma gourde d'eau\b/gi, "mo bwado den gùrdo");
+    traduction = traduction.replace(/\ble vaporisateur\b/gi, "lopchitpchit");
+    traduction = traduction.replace(/\ble ventilateur\b/gi, "opchitven");
+    traduction = traduction.replace(/\bvaporisateur\b/gi, "pchit pchit");
+    traduction = traduction.replace(/\bventilateur\b/gi, "pchit ven");
+
+    traduction = traduction.replace(/\brouge\b/gi, "rùz");
+    traduction = traduction.replace(/\borange\b/gi, "orenz");
+    traduction = traduction.replace(/\bjaune\b/gi, "zonn");
+    traduction = traduction.replace(/\brose\b/gi, "roz");
+    traduction = traduction.replace(/\bvert\b/gi, "bestrian");
+    traduction = traduction.replace(/\bbleu\b/gi, "ble");
+    traduction = traduction.replace(/\bblanc\b/gi, "blo");
+    traduction = traduction.replace(/\bnoir\b/gi, "negr");
+    traduction = traduction.replace(/\bnoire\b/gi, "negra");
+    traduction = traduction.replace(/\bblanche\b/gi, "bla");
+    traduction = traduction.replace(/\bviolet\b/gi, "viole");
+    traduction = traduction.replace(/\bviolette\b/gi, "violett");
+    traduction = traduction.replace(/\bmarron\b/gi, "maron");
+    traduction = traduction.replace(/\bgris\b/gi, "beg");
+    traduction = traduction.replace(/\bgrise\b/gi, "beg");
+    traduction = traduction.replace(/\bturquoise\b/gi, "sateng");
+    traduction = traduction.replace(/\bciel\b/gi, "siel");
+    traduction = traduction.replace(/\bmoutarde\b/gi, "may");
+    traduction = traduction.replace(/\bkaki\b/gi, "kak");
+    traduction = traduction.replace(/\bordeau\b/gi, "bordo");
+    traduction = traduction.replace(/\bclair\b/gi, "cler");
+    traduction = traduction.replace(/\bfoncé\b/gi, "fonse");
+
+    traduction = traduction.replace(/\bguêpe\b/gi, "gepp");
+    traduction = traduction.replace(/\banimal\b/gi, "animal");
+    traduction = traduction.replace(/\bl'animal\b/gi, "lanimal");
+    traduction = traduction.replace(/\banimaux\b/gi, "animals");
+    traduction = traduction.replace(/\babeille\b/gi, "bzibzit");
+    traduction = traduction.replace(/\béléphant\b/gi, "grosendralm");
+    traduction = traduction.replace(/\bgirafe\b/gi, "zota imens");
+    traduction = traduction.replace(/\bla girafe\b/gi, "lazotahimens");
+    traduction = traduction.replace(/\btigre\b/gi, "tigr");
+    traduction = traduction.replace(/\blion\b/gi, "lin");
+    traduction = traduction.replace(/\bsinge\b/gi, "ùhùhaha");
+    traduction = traduction.replace(/\bdauphin\b/gi, "animalo");
+    traduction = traduction.replace(/\bpoisson\b/gi, "glùglù");
+    traduction = traduction.replace(/\brequin\b/gi, "mechenhnanimalo");
+    traduction = traduction.replace(/\bbaleine\b/gi, "gentihnanimalo");
+    traduction = traduction.replace(/\bune baleine\b/gi, "un gentihnanimalo");
+    traduction = traduction.replace(/\bla baleine\b/gi, "logentihnanimalo");
+    traduction = traduction.replace(/\bperroquet\b/gi, "repetùté");
+    traduction = traduction.replace(/\biguan\b/gi, "igùann");
+    traduction = traduction.replace(/\boiseau\b/gi, "più più");
+    traduction = traduction.replace(/\bescargot\b/gi, "lenhnanimal");
+
+    traduction = traduction.replace(/\b(je|tu|il|elle|on|nous|vous|ils|elles)\s+/gi, "");
+
+    // ==========================================
+    // 6. TRADUCTION DES MOTS SIMPLES RESTANTS
+    // ==========================================
+    traduction = traduction.replace(/\bc'est\b/gi, "sée");
+
+    traduction = traduction.replace(/(?:^|\s)à(?=$|\s)/gi, function(match) {
+        return match.replace("à", "a");
+    });
+
+    traduction = traduction.replace(/\bmon\b/gi, "mo");
+    traduction = traduction.replace(/\bma\b/gi, "ma");
+    traduction = traduction.replace(/\best\b/gi, "");
+    traduction = traduction.replace(/\bsont\b/gi, "");
+    traduction = traduction.replace(/\bpas\b/gi, "pa");
+    
+    traduction = traduction.replace(/\bbonjour\b/gi, "bonjùr");
+    traduction = traduction.replace(/\bau revoir\b/gi, "orevwar");
+    traduction = traduction.replace(/\bmerci\b/gi, "mersi");
+    
+    traduction = traduction.replace(/\bbeau\b/gi, "bo");
+    traduction = traduction.replace(/\bbelle\b/gi, "bel");
+    traduction = traduction.replace(/\bpetit\b/gi, "pti");
+    traduction = traduction.replace(/\bpetite\b/gi, "pti");
+    traduction = traduction.replace(/\bgrand\b/gi, "imens");
+    traduction = traduction.replace(/\bgrande\b/gi, "imens");
+    traduction = traduction.replace(/\bchien\b/gi, "chiun");
+    traduction = traduction.replace(/\bchienne\b/gi, "chiun");
+    traduction = traduction.replace(/\bchat\b/gi, "cha");
+    traduction = traduction.replace(/\bchatte\b/gi, "cha");
+    traduction = traduction.replace(/\bvenir\b/gi, "vinir");
+    traduction = traduction.replace(/\bgrignoter\b/gi, "miamiamioter");
+
+    traduction = traduction.replace(/\btrop\b/gi, "tro");
+    traduction = traduction.replace(/\btrès\b/gi, "tre");
+    traduction = traduction.replace(/\bmais\b/gi, "me");
+    traduction = traduction.replace(/\bet\b/gi, "e");
+    traduction = traduction.replace(/\bau\b/gi, "o");
+    traduction = traduction.replace(/\bj'\b/gi, "");
+    traduction = traduction.replace(/\bmaman\b/gi, "mama");
+    traduction = traduction.replace(/\bpapa\b/gi, "papa");
+    traduction = traduction.replace(/\bpère\b/gi, "per");
+    traduction = traduction.replace(/\bmère\b/gi, "mer");
+    traduction = traduction.replace(/\benfant\b/gi, "enfen");
+    traduction = traduction.replace(/\bun\b/gi, "un");
+    traduction = traduction.replace(/\bune\b/gi, "unn");
+    traduction = traduction.replace(/\ble\b/gi, "lo");
+    traduction = traduction.replace(/\bla\b/gi, "la");
+    traduction = traduction.replace(/\bles\b/gi, "");
+    traduction = traduction.replace(/\bça\b/gi, "sa");
+    traduction = traduction.replace(/\bton\b/gi, "to");
+    traduction = traduction.replace(/\bpour\b/gi, "pùr");
+    traduction = traduction.replace(/\bcela\b/gi, "sa");
+    traduction = traduction.replace(/\bpar\b/gi, "para");
+    
+    traduction = traduction.replace(/\bdes\b/gi, "de");
+    traduction = traduction.replace(/\bde\b/gi, "de");
+    traduction = traduction.replace(/\bdu\b/gi, "de");
+    
+    traduction = traduction.replace(/\bavec\b/gi, "avek");
+    traduction = traduction.replace(/\bmoi\b/gi, "mwa");
+    traduction = traduction.replace(/\btoi\b/gi, "twa");
+    traduction = traduction.replace(/\blui\b/gi, "lwi");
+    traduction = traduction.replace(/\beux\b/gi, "lwes");
+
+    traduction = traduction.replace(/\bboulangerie\b/gi, "pun a buyer");
+    traduction = traduction.replace(/\bboucher\b/gi, "carn a cùper");
+    traduction = traduction.replace(/\bmaison\b/gi, "mézon");
+    traduction = traduction.replace(/\bimmeuble\b/gi, "esok");
+    traduction = traduction.replace(/\bappartement\b/gi, "apartmen");
+    traduction = traduction.replace(/\bécole\b/gi, "esokaprend");
+
+    traduction = traduction.replace(/\bchéri\b/gi, "chéri");
+    traduction = traduction.replace(/\bchérie\b/gi, "chéri");
+
+    // Sentiments
+    traduction = traduction.replace(/\bmalade\b/gi, "malad");
+    traduction = traduction.replace(/\bguéri\b/gi, "plu malad");
+    traduction = traduction.replace(/\bjoyeux\b/gi, "konten");
+    traduction = traduction.replace(/\btriste\b/gi, "pakonten");
+    traduction = traduction.replace(/\bcolère\b/gi, "padutùkonten");
+    traduction = traduction.replace(/\bheureux\b/gi, "bien");
+    traduction = traduction.replace(/\bmalheureux\b/gi, "pabien");
+    traduction = traduction.replace(/\bpeur\b/gi, "efreyé");
+    traduction = traduction.replace(/\bla joie\b/gi, "kontenté");
+    traduction = traduction.replace(/\bjoie\b/gi, "kontenté");
+    traduction = traduction.replace(/\bla tristesse\b/gi, "pakontenté");
+    traduction = traduction.replace(/\btristesse\b/gi, "pakontenté");
+    traduction = traduction.replace(/\bennuyeux\b/gi, "enhnwiye");
+    traduction = traduction.replace(/\bennuyant\b/gi, "enhnwiyen");
+    traduction = traduction.replace(/\bprovocant\b/gi, "agasen");
+    traduction = traduction.replace(/\bcontent\b/gi, "konten");
+
+
+        
+    
+    if (/\b(gazeuse|pétillante|plate)\b/gi.test(texte)) {
+        traduction = traduction.replace(/\bo\s+(gazeuse|petiayent|plate)/gi, 'o$1');
+    }
+
+    // ==========================================
+    // 7. REGLE DE COLLAGE FINALE
+    // ==========================================
+    if (!/\b(est|sont)\b/gi.test(texte)) {
+        traduction = traduction.replace(/\b(lo|la)\s+(?!(?:de|un|unn|lo|la|des|pas|ni|du|le)\b)(\w+)/gi, '$1$2');
+        traduction = traduction.replace(/\bde\s+(\w+)/gi, function(match, motSuivant) {
+            var determinants = ["de", "un", "unn", "lo", "la", "des", "pas", "ni", "du", "le"];
+            if (determinants.includes(motSuivant.toLowerCase())) {
+                return match; 
+            }
+            if (positionsDes.includes(motSuivant.toLowerCase()) || motSuivant.toLowerCase() === "frwis" || positionsDes.includes("fruits")) {
+                return "de" + motSuivant;
+            }
+            return match;
+        });
+    }
+    
+    document.getElementById("resultat").innerHTML = "Traduction : " + traduction;
+}
+</script>
+
+</body>
+</html>
